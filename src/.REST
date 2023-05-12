@@ -1,0 +1,31 @@
+
+GET http://localhost:8080/api/productos
+
+### GET
+GET http://localhost:8080/api/productos/645b03957abb28fd6691ce61
+
+### DELETE
+DELETE http://localhost:8080/api/productos/645b03957abb28fd6691ce61
+
+### GET
+GET http://localhost:8080/api/productos/code/0003
+###
+POST http://localhost:8080/api/productos
+Content-Type: application/json
+
+{
+"title": "Producto 6",
+"description": "Producto 6",
+"thumbnail": "",
+"price": 66,
+"iva": 10.5,
+"stock": 15,
+"code": "0006"
+
+}
+
+### Put
+PUT http://localhost:8080/api/productos/id
+
+### DELETE
+DELETE http://localhost:8080/api/productos/id
