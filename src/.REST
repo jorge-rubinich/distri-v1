@@ -1,8 +1,10 @@
 
-GET http://localhost:8080/api/productos
+GET http://localhost:8080/api/productos?page=1&limit=5&filter=category=Drama
+
 
 ### GET
-GET http://localhost:8080/api/productos/645b03957abb28fd6691ce61
+GET http://localhost:8080/api/productos/645b00f0dbd6b1315a5d6c8e
+
 
 ### DELETE
 DELETE http://localhost:8080/api/productos/645b03957abb28fd6691ce61

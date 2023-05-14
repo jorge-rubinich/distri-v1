@@ -3,11 +3,14 @@ const routerServer = require('./routes')
 const logger = require('morgan')
 const {connectDb} = require('./config/configServer.js')
 const cookieParser = require("cookie-parser")
+const systemVars = require('./config/index.js')
+
+const { PORT } = systemVars.app
+const {URI} = systemVars.database
 
 const app = express()
-const PORT= 8080
 
-connectDb()
+connectDb(URI)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
