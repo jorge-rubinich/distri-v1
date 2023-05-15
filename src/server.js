@@ -6,6 +6,8 @@ const logger = require('morgan')
 const {connectDb} = require('./config/configServer.js')
 const cookieParser = require("cookie-parser")
 const systemVars = require('./config/index.js')
+const socketServer = require("./sockets/socketServer.js")
+
 
 const { PORT } = systemVars.app
 const {URI} = systemVars.database
@@ -23,10 +25,11 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname+'/public'))
 app.use(logger('dev'))
-app.use(cookieParser('hola hola'))
 
 app.use("/", viewsRouter)
 app.use(routerServer)
+
+//socketServer.createSocketServer()
 
 app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)

@@ -38,5 +38,5 @@ POST http://localhost:8080/api/carrito/jr@bitbyte.com.ar
 ### Crear Carrito
 POST http://localhost:8080/api/carrito/juan@correo.com
 
-### Crear Carrito
+### Agregar producto al Carrito
 POST http://localhost:8080/api/carrito/6461a37cf6cfe84be01f7eed/product/6460eeecf6cfe84be01f7ee6
