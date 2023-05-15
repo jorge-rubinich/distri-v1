@@ -1,5 +1,7 @@
 const express = require("express")
 const routerServer = require('./routes')
+const viewsRouter = require('./routes/views.router.js')
+const handlebars = require('express-handlebars')
 const logger = require('morgan')
 const {connectDb} = require('./config/configServer.js')
 const cookieParser = require("cookie-parser")
@@ -10,6 +12,11 @@ const {URI} = systemVars.database
 
 const app = express()
 
+// Handlebars Setup
+app.engine('handlebars', handlebars.engine({}))
+app.set('views', './views')
+app.set('view engine','handlebars')
+
 connectDb(URI)
 
 app.use(express.json())
@@ -18,6 +25,7 @@ app.use(express.static(__dirname+'/public'))
 app.use(logger('dev'))
 app.use(cookieParser('hola hola'))
 
+app.use("/", viewsRouter)
 app.use(routerServer)
 
 app.listen(PORT, (err)=>{

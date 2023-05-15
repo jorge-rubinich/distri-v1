@@ -1,6 +1,6 @@
 const { productModel } = require(`./model/product.model`)
 
-class ProductManagerMongo {
+class ProductManager {
 
     async id(pid){
         try {
@@ -16,7 +16,20 @@ class ProductManagerMongo {
         try {
             //return await productModel.find({})
             const {page, limit, filter} = query
-            return await productModel.paginate({} ,{limit, page})
+            return await productModel.paginate({} ,{limit, page, lean:true})
+        }catch(err){
+            return new Error(err)
+        }
+    }
+
+    async getProductsJSON(query){
+        console.log(query)
+    
+        try {
+            //return await productModel.find({})
+            const {page, limit, filter} = query
+            //return await productModel.find().limit(limit).lean();
+            return await productModel.paginate({} ,{limit, page, lean: true})
         }catch(err){
             return new Error(err)
         }
@@ -63,4 +76,4 @@ class ProductManagerMongo {
     }
 }
 
-module.exports = new ProductManagerMongo
+module.exports = new ProductManager

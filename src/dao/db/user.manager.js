@@ -1,4 +1,4 @@
-class UserManagerMongo {
+class UserManager {
     async getUsers(){
         try {
             return await userModel.find({})
@@ -12,4 +12,4 @@ class UserManagerMongo {
     async deleteUser(){}
 }
 
-module.exports = UserManagerMongo
+module.exports = UserManager

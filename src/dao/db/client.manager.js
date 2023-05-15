@@ -1,7 +1,7 @@
 const { clientModel } = require(`./model/client.model`)
 
 
-class ClientManagerMongo {
+class ClientManager {
     async getClients(){
         try {
             return await clientModel.find({})
@@ -52,4 +52,4 @@ class ClientManagerMongo {
     
 }
 
-module.exports = ClientManagerMongo
+module.exports = ClientManager

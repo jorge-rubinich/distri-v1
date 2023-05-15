@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const clientManager = require('../Managers/mongo/client.mongo.js')
+const clientManager = require('../dao/db/client.manager.js')
 
 const router = Router()
 

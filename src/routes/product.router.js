@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const productManager = require('../Managers/mongo/product.mongo.js')
+const productManager = require('../dao/db/product.manager.js')
 const systemVars = require('../config/index.js')
 
 const router = Router()
