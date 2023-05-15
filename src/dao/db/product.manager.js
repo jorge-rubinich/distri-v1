@@ -1,4 +1,5 @@
 const { productModel } = require(`./model/product.model`)
+const systemVars = require('../../config/index.js')
 
 class ProductManager {
 
@@ -11,25 +12,22 @@ class ProductManager {
     }
 
     async getProducts(query){
-        console.log(query)
+        const {page = 1, limit= systemVars.pager.limit, filter=""} = query
     
         try {
-            //return await productModel.find({})
-            const {page, limit, filter} = query
-            return await productModel.paginate({} ,{limit, page, lean:true})
+            return await productModel.paginate({filter} ,{limit, page, lean:true})
         }catch(err){
             return new Error(err)
         }
     }
 
     async getProductsJSON(query){
-        console.log(query)
     
         try {
-            //return await productModel.find({})
-            const {page, limit, filter} = query
-            //return await productModel.find().limit(limit).lean();
+            const {page = 1, limit = 3, filter= ""} = query
             return await productModel.paginate({} ,{limit, page, lean: true})
+ 
+        
         }catch(err){
             return new Error(err)
         }

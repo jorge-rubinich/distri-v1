@@ -31,4 +31,5 @@ app.use(routerServer)
 app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
     console.log(`Escuchando en Puerto ${PORT}`)
+    console.log(`acceder a ${systemVars.app.HOST_URL}/  .. burdo..pero funciona!`) 
 })

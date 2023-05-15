@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row mb-3">
+
     {{#if products}}
         {{#each products}}
         <div class="col-4">
@@ -24,7 +25,24 @@
 
     {{/if}}
     </div>
+    {{#if havePages}}
+        <div class="row mb-3">
+            <div class="col-4">
+                {{#if hasPrevPage}}
+                    <a href="{{prevLink}}" class=""><< Pagina {{prevPage}}</a>
+                {{/if}}
+            </div>
+            <div class="col-4">
+                Pagina  {{page}} de {{totalPages}}
+            </div>
+            <div class="col-4">
+                {{#if hasNextPage}}
+                     <a href="{{nextLink}}" class="">Pagina {{nextPage}} >></a>
+                {{/if}}
+            </div>
 
+        </div>
+    {{/if}}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/index.js"></script>

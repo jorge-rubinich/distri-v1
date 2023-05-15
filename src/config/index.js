@@ -14,7 +14,7 @@ const systemVars = {
     password: process.env.DATABASE_PASSWORD,
   },
   pager: {
-    limit: 10,
+    limit: 3,
     page: 1,
   }
 }
