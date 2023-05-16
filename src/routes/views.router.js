@@ -20,8 +20,8 @@ viewsRouter.get("/", async (req, res)=>{
 
 
 function createLink(origQuery, page, newPage) {
-    const newQuery=(origQuery.includes('&page'))? origQuery.replace('&page='+page, '&page='+newPage) : origQuery+'&page='+newPage
-    return `${systemVars.app.HOST_URL}${newQuery}`
+    return `${systemVars.app.HOST_URL}${(origQuery.includes('&page'))? 
+    origQuery.replace('&page='+page, '&page='+newPage) : origQuery+'&page='+newPage}`
 }
 
 module.exports = viewsRouter
