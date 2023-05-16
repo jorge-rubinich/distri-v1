@@ -5,7 +5,7 @@ const systemVars = require('../config/index.js')
 
 viewsRouter.get("/", async (req, res)=>{
     const result = await productManager.getProductsJSON(req.query)
-    console.log(result)
+   // console.log(result)
     const products = result.docs
     const prevPage= result.prevPage
     const nextPage = result.nextPage
@@ -22,7 +22,7 @@ viewsRouter.get("/", async (req, res)=>{
 
 function createLink(reqQuery, page) {
     const {limit, sort, query} = reqQuery
-    return `${systemVars.app.HOST_URL}/?limit=${limit || systemVars.pager.limit}&page=${page}`
+    return `${systemVars.app.HOST_URL}/?limit=${limit || systemVars.pager.limit}&page=${page}${sort? "&sort="+sort:"" }`
 }
 
 module.exports = viewsRouter

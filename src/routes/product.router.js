@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/', async (req, res)=>{
     try {
-        const result = await productManager.getProducts(req.query)
+        const result = await productManager.getProductsJSON(req.query)
         console.log(result)
         res.status(200).send({
         status: 'success',
@@ -26,7 +26,7 @@ router.get('/', async (req, res)=>{
 })
 
 function createLink(reqQuery, page) {
-    const {limit, sort, query} = reqQuery
+    const {limit, sort, filter} = reqQuery
     return `${systemVars.app.HOST_URL}/api/products?limit=${limit || systemVars.pager.limit}&page=${page}`
 }
 

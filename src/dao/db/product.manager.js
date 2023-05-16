@@ -12,20 +12,35 @@ class ProductManager {
     }
 
     async getProducts(query){
-        const {page = 1, limit= systemVars.pager.limit, filter=""} = query
-    
+        const {page = 1, limit= systemVars.pager.limit, filter="", sort= asc} = query
+        
         try {
-            return await productModel.paginate({filter} ,{limit, page, lean:true})
+            return await productModel.paginate({filter} ,{limit, page, lean:true}).sort()
         }catch(err){
             return new Error(err)
         }
     }
 
-    async getProductsJSON(query){
-    
+    async getProductsJSON(reqQuery){
         try {
-            const {page = 1, limit = 3, filter= ""} = query
-            return await productModel.paginate({} ,{limit, page, lean: true})
+            const {page = 1, limit = systemVars.pager.limit, query= {}, sort =""} = reqQuery
+            const sortObj = (!sort)? {} : (sort==="asc")? {price:1} : {price:-1}
+            let queryObj={}
+            if (query)  {
+                const [key,value]= query.split(':')
+                console.log(key, value)
+                queryObj= {
+                    [key]: value
+                }
+            }
+            const options= {
+                limit,
+                page,
+                lean: true,
+                sort: sortObj
+            }
+            console.log(queryObj)
+            return await productModel.paginate(queryObj ,options)
  
         
         }catch(err){

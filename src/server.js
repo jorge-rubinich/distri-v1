@@ -7,7 +7,19 @@ const {connectDb} = require('./config/configServer.js')
 const cookieParser = require("cookie-parser")
 const systemVars = require('./config/index.js')
 const socketServer = require("./sockets/socketServer.js")
+const FileStore = require("session-file-store")
 
+/* const fileStore= FileStore(session)
+app.use(session({
+    store: new filesStore({
+        ttl: 100000*60,
+        path: '/session',
+        retries: 0
+    }),
+    secret:  'secretCoder',
+    resave: true,
+    saveUninitialized: true
+})) */
 
 const { PORT } = systemVars.app
 const {URI} = systemVars.database
@@ -29,10 +41,16 @@ app.use(logger('dev'))
 app.use("/", viewsRouter)
 app.use(routerServer)
 
-//socketServer.createSocketServer()
 
-app.listen(PORT, (err)=>{
+
+
+// estudar https://refactoring.guru/es/design-patterns/singleton
+
+server = app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
     console.log(`Escuchando en Puerto ${PORT}`)
     console.log(`acceder a ${systemVars.app.HOST_URL}/  .. burdo..pero funciona!`) 
 })
+
+
+//socketServer.createSocketServer(server)
