@@ -49,7 +49,10 @@ app.use(routerServer)
 server = app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
     console.log(`Escuchando en Puerto ${PORT}`)
-    console.log(`acceder a ${systemVars.app.HOST_URL}/  .. burdo..pero funciona!`) 
+    console.log(`acceder a ${systemVars.app.HOST_URL}/ `) 
+    console.log(`      o a ${systemVars.app.HOST_URL}/?query=category:smartphones `) 
+    console.log(`      o a ${systemVars.app.HOST_URL}/?sort=asc    o ambas`) 
+
 })
 
 

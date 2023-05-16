@@ -1,4 +1,3 @@
-console.log("catoy")
 
 function addToCart(pid) {
   cartId="6461ab11c75bfb8f6f81a12f"

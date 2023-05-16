@@ -23,8 +23,9 @@ class ProductManager {
 
     async getProductsJSON(reqQuery){
         try {
-            const {page = 1, limit = systemVars.pager.limit, query= {}, sort =""} = reqQuery
+            const {page = 1, limit = systemVars.pager.limit, query= "", sort =""} = reqQuery
             const sortObj = (!sort)? {} : (sort==="asc")? {price:1} : {price:-1}
+            console.log(page, limit, query, sort)
             let queryObj={}
             if (query)  {
                 const [key,value]= query.split(':')
@@ -39,11 +40,12 @@ class ProductManager {
                 lean: true,
                 sort: sortObj
             }
-            console.log(queryObj)
+            console.log("queryObj",queryObj, "options",options)
             return await productModel.paginate(queryObj ,options)
  
         
         }catch(err){
+            console.log(err)
             return new Error(err)
         }
     }
