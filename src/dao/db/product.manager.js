@@ -25,11 +25,9 @@ class ProductManager {
         try {
             const {page = 1, limit = systemVars.pager.limit, query= "", sort =""} = reqQuery
             const sortObj = (!sort)? {} : (sort==="asc")? {price:1} : {price:-1}
-            console.log(page, limit, query, sort)
             let queryObj={}
             if (query)  {
                 const [key,value]= query.split(':')
-                console.log(key, value)
                 queryObj= {
                     [key]: value
                 }
@@ -40,7 +38,6 @@ class ProductManager {
                 lean: true,
                 sort: sortObj
             }
-            console.log("queryObj",queryObj, "options",options)
             return await productModel.paginate(queryObj ,options)
  
         

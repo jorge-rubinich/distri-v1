@@ -44,7 +44,7 @@ app.use(routerServer)
 
 
 
-// estudar https://refactoring.guru/es/design-patterns/singleton
+// estudiar https://refactoring.guru/es/design-patterns/singleton
 
 server = app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
