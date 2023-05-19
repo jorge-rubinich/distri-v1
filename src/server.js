@@ -8,6 +8,9 @@ const cookieParser = require("cookie-parser")
 const systemVars = require('./config/index.js')
 const socketServer = require("./sockets/socketServer.js")
 const FileStore = require("session-file-store")
+const session = require('express-session')
+const { initPassport } = require("./config/passport.config")
+const passport = require('passport')
 
 /* const fileStore= FileStore(session)
 app.use(session({
@@ -26,6 +29,16 @@ const {URI} = systemVars.database
 
 const app = express()
 
+app.use(session({
+    secret: 'secretito',
+    resave: true,   // para que la session no muera
+    saveUninitialized: true //guarda la session aunque no tenga datos
+}))
+
+initPassport()
+passport.use(passport.initialize())
+passport.use(passport.session())
+
 // Handlebars Setup
 app.engine('handlebars', handlebars.engine({}))
 app.set('views', './views')
@@ -42,8 +55,6 @@ app.use("/", viewsRouter)
 app.use(routerServer)
 
 
-
-
 // estudiar https://refactoring.guru/es/design-patterns/singleton
 
 server = app.listen(PORT, (err)=>{
@@ -56,4 +67,4 @@ server = app.listen(PORT, (err)=>{
 })
 
 
-//socketServer.createSocketServer(server)
+socketServer.createSocketServer(server)

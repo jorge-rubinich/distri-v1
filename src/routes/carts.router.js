@@ -1,7 +1,7 @@
 const {Router} = require('express')
 const cartManager = require('../dao/db/cart.manager.js')
 const systemVars = require('../config/index.js')
-
+const userLog = require('../middlewares/userLog.middleware.js')
 const router = Router()
 
 router.get('/', async (req, res)=>{
@@ -47,9 +47,15 @@ router.post('/:uid', async (req, res)=>{
     }
 })
 
-router.post('/:cid/product/:pid', async (req, res)=>{
-    const {cid, pid} = req.params
+// Add product to Cart
+router.post('/product/:pid', async (req, res)=>{
+    const {pid} = req.params
+    console.log(req.session.user, !req.session.user?.userRegistered)
+    if (!req.session.user?.userRegistered) return res.status(302).redirect('/login')
+    const cid = req.session.user.cartId
+
     const quantity = req.body.quantity | 1 
+    console.log(cid)
     try {
         const response = await cartManager.addProduct(cid, pid, quantity) 
         if (response.status==="error"){

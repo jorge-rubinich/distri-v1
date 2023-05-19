@@ -1,8 +1,9 @@
 
+
+
 function addToCart(pid) {
-  cartId="6461ab11c75bfb8f6f81a12f"
-  
-  const url = `http://localhost:8080/api/carrito/${cartId}/product/${pid}`
+  console.log('ca toy')
+  const url = `http://localhost:8080/api/carrito/product/${pid}`
   const data  = {quantity :1}
   const options = {
     method: 'POST',
@@ -14,13 +15,20 @@ function addToCart(pid) {
 
   fetch(url, options)
   .then(response => {
-    if (response.ok) {
-      return response.json()
-    } else {
-      throw new Error('Error en la solicitud')
+    console.log(response)
+    if (response.redirected) {
+      window.location.href = response.url
+      }else{
+        if (response.ok) {
+          return response.json()
+        }  else {
+          throw new Error('Error en la solicitud')
+        }
+      }
     }
-  })
-  .then(data => {
+    ).then(data => {
+    const contadorCarrito = document.getElementById('contadorCarrito');
+    contadorCarrito.innerHTML= data.productsQty 
     console.log(data)
     Swal.fire({
       text: `Producto #${pid} ha sido agregado al carrito.`,
@@ -33,6 +41,5 @@ function addToCart(pid) {
   .catch(error => {
     console.error(error); // Maneja los errores de la solicitud
   });
-
 
 }

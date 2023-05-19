@@ -5,6 +5,7 @@ const productRouter = require('./product.router.js')
 const userRouter = require('./user.router.js')
 const clientRouter = require('./client.router.js')
 const cartRouter = require('./carts.router.js')
+const sessionRouter= require('./session.router.js')
 //const pruebasRouter = require('./pruebas.router.js')
 
 const { fileUploader } = require('../utils/multer.js')
@@ -13,7 +14,6 @@ const { fileUploader } = require('../utils/multer.js')
     res.send('Hola, mundo cruel')
 })  */
 
-
 router.use('/api/productos',productRouter)
 
 router.use('/api/usuarios', userRouter )
@@ -21,6 +21,9 @@ router.use('/api/usuarios', userRouter )
 router.use('/api/clientes', clientRouter )
 
 router.use('/api/carrito', cartRouter )
+
+router.use('/api/session',sessionRouter)
+
 
 //router.use('/pruebas', pruebasRouter)
 

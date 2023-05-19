@@ -2,19 +2,35 @@
 
     <div class="row mb-2">
         <div class ="col-8">
+            {{user.userName}}
+            <a href="/login">
+                <button class="btn btn-primary" type="button" id="botonLoginLogout">       
+                    {{user.userButton}}
+                </button>
+            </a>
+            {{#unless user.userRegistered}}
 
+            <a href="/register">
+                <button class="btn btn-primary" type="button" id="botonRegister">       
+                    Registrate
+                </button>
+            </a>
+            {{/unless}}
+            
         </div>
         <div class = "col-4">
             <section id="botonCarrito">
-                <a>
-                </a>
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carritoOffcanvas" aria-controls="carritoOffcanvas">
-                    <i class="bi bi-cart4"><img = src="./imgs/shopping_cart.svg"></i><span id="contadorCarrito"></span>
+                    <i class="bi bi-cart4"><img = src="./imgs/shopping_cart.svg"></i>
+                    <span id="contadorCarrito">
+                        {{user.cartQty}}
+                    </span>
                 </button>
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
+                <a href="/chat">
+                <button class="btn btn-primary {{#unless user.userRegistered}}disabled{{/unless}}" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
                     <i class="bi bi-cart4"><img = src="./imgs/chat.svg"></i>
                 </button>                                    
-
+                </a>
             </section>
         </div>
 
@@ -60,8 +76,11 @@
                     <mark>$ {{this.price}}</mark>
                     </div>
                     <div class="col-6">
-                        <a href="#" class="btn btn-outline-primary" onclick=addToCart('{{this._id}}')>Comprar</a>
 
+                        <a href="#" class="btn btn-outline-primary" 
+                                onclick=addToCart('{{this._id}}')>
+                                Comprar
+                        </a>
                     </div>
                 </div>
             </div>
