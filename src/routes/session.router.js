@@ -13,27 +13,24 @@ router.post("/loginNuevo", passport.authenticate('login', {
 router.post('/login', async (req, res)=>{
     const {email, password} = req.body
     const userDB = await userModel.findOne({email, password})
-
-    if (!userDB)   return res.send({status:'error', message:'No se encontró el usuario'})
+    if (!userDB)   return res.status(404).send({status:'error', message:'No se encontró el usuario'})
     //have user. createCart create a cart (if no exist) and 
     // return the cartId
     const userCart= await cartManager.createCart(userDB.email)
     const cartQty= await cartManager.countProducts(userCart._id)
+    role = (email=='adminCoder@coder.com' && password=='adminCod3r123')?'admin': 'usuario'
 
     req.session.user = {
         first_name: userDB.first_name,
         last_name: userDB.last_name,
         email: userDB.email,
-        role: 'admin',
+        role,
         userRegistered: true,
         userButton: "Logout",   
         cartId:userCart._id,
         cartQty 
     }
-    console.log(userCart)
-    console.log(userDB)
-    console.log(req.session.user)
-
+  
     res.redirect('/')
 
 })
@@ -47,13 +44,14 @@ router.post("/registerNuevo", passport.authenticate('registerLocal', {
 
 router.post('/register', async (req, res)=>{
     try {
-        const {username,first_name, last_name, email, password} = req.body 
+        console.log(req.body)
+        const {first_name, last_name, email, password} = req.body 
         //validar los campos
     
         // is mail already used?
         const existUser = await userModel.findOne({email})
     
-        if (existUser) return res.send({status: 'error', message: 'el email ya está registrado' })
+        if (existUser) return res.status(400).send({status: 'error', message: 'el email ya está registrado' })
     
         // otra forma
         // const newUser = new userModel({
@@ -66,12 +64,12 @@ router.post('/register', async (req, res)=>{
         // await newUser.save()
     
         const newUser = {
-            username,
             first_name,
             last_name, 
             email, 
             password  /// encriptar
         }
+
         let createdUser = await userModel.create(newUser)
         
         if (!createdUser) return res.status(400).send({status: 'error',
@@ -93,7 +91,7 @@ router.get('/logout', (req, res)=>{
         if (err) {
             return res.send({status: 'error', error: err})
         }
-        res.send('logout ok')
+        res.status(200).send('logout ok')
     })
 })
 

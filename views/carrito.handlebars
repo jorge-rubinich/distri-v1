@@ -1,0 +1,34 @@
+<div>
+    <h1>Usuario: {{user.first_name}} {{user.last_name}}</h1>
+    <div>
+        {{#each HBCart}}
+        <div class="row mb-4">
+            <div class="col-1 quantity">
+                {{quantity}}
+            </div>
+            <div class="col-4 title">
+                {{title}}
+            </div>
+            <div class="col-2 price">
+                {{price}}
+            </div>
+            <div class="col-2 total">
+                {{total}}
+            </div>
+            <div class="col-2 Borrar">
+                <button class="btn btn-primary " type="button" onclick=deleteFromCart('{{productId}}')>
+                    <i class="bi bi-cart4"><img = src="/imgs/delete.svg"></i>
+                </button>    
+
+            </div>
+
+        </div>
+
+        {{/each}}
+    </div>
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/index.js"></script>

@@ -28,9 +28,8 @@ class ProductManager {
             let queryObj={}
             if (query)  {
                 const [key,value]= query.split(':')
-                queryObj= {
-                    [key]: value
-                }
+                queryObj= { [key]: value}
+    
             }
             const options= {
                 limit,
@@ -62,6 +61,11 @@ class ProductManager {
             return new Error(err)
         }
     }
+
+    async getCategories() {
+        return await productModel.distinct('category')
+    }
+
 
     async addProduct(newProduct){
         try {

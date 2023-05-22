@@ -37,7 +37,7 @@ socket.on("chat-started", (msgHistory) => {
     msgHistory.forEach(message => { 
         msgLog += `
         <li>
-          ${(message.user===user)? ".........":""}
+          ${(message.user===user)? "__________":""}
           <strong>${message.user} dice</strong>: ${message.message}
         </li>
         `
@@ -47,10 +47,11 @@ socket.on("chat-started", (msgHistory) => {
   })
 
 socket.on("message-received", (data) => {
-    const { user, message } = data
     messageLog.innerHTML += `
     <li>
-      <strong>${user} dice</strong>: ${message}
+
+      ${(data.user===user)? "__________":""}
+      <strong>${data.user} dice</strong>: ${data.message}
     </li>
     `
   })

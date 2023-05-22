@@ -10,7 +10,7 @@ const productSchema = new Schema({
     description: {
             type: String,
          required: true},
-    thumbnail: String,
+    thumbnails: String,
     price: {type: Number,
             required: true},
     iva: {
@@ -21,6 +21,7 @@ const productSchema = new Schema({
         scale: 2
     },
     stock: Number,
+    category: String,
     code: {
         type: String,
         unique: true,

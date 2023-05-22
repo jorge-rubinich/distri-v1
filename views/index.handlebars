@@ -1,64 +1,98 @@
 <div class="container-fluid ">
 
     <div class="row mb-2">
-        <div class ="col-8">
-            {{user.userName}}
-            <a href="/login">
-                <button class="btn btn-primary" type="button" id="botonLoginLogout">       
-                    {{user.userButton}}
-                </button>
-            </a>
-            {{#unless user.userRegistered}}
+        
+        {{#if user.userRegistered}}
+            <div class ="col-1">
+                <a  href="">
+                    <button class="btn btn-primary" type="button" id="botonLoginLogout" onclick=logout()>       
+                        Logout
+                    </button>
+                </a>
+            </div>
 
-            <a href="/register">
-                <button class="btn btn-primary" type="button" id="botonRegister">       
-                    Registrate
-                </button>
-            </a>
-            {{/unless}}
-            
-        </div>
+            <div class="col-7">
+                <div>{{user.last_name}}, {{user.first_name}}</div>
+                <div>{{user.email}} ({{user.role}})</div>
+            </div>                 
+
+
+        {{else}}
+            <div class ="col-1">              
+                    <button class="btn btn-primary" type="button" id="botonLoginLogout" onclick=login()>       
+                        Login
+                    </button>               
+            </div>
+            <div class="col-7">
+                    <button class="btn btn-primary" type="button" id="botonRegister" onclick=register()>       
+                        Registrate
+                    </button>
+            </div>
+        {{/if}}
+
         <div class = "col-4">
-            <section id="botonCarrito">
+            <section>
+                <a href="{{#if user.userRegistered}}/api/carrito/fromUSer{{/if}}">
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carritoOffcanvas" aria-controls="carritoOffcanvas">
                     <i class="bi bi-cart4"><img = src="./imgs/shopping_cart.svg"></i>
                     <span id="contadorCarrito">
                         {{user.cartQty}}
                     </span>
                 </button>
-                <a href="/chat">
-                <button class="btn btn-primary {{#unless user.userRegistered}}disabled{{/unless}}" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
-                    <i class="bi bi-cart4"><img = src="./imgs/chat.svg"></i>
-                </button>                                    
                 </a>
+                {{#if user.userRegistered}}
+                    <a href="/chat">
+                    <button class="btn btn-primary " type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
+                        <i class="bi bi-cart4"><img = src="./imgs/chat.svg"></i>
+                    </button>                                    
+                    </a>
+                {{/if}}
             </section>
         </div>
-
-
     </div>
-    <div class=" border">
-    <form >
-        <div class="row mb-4">
-            <div class="form-group col-4">
-                Categoria: 
+
+
+
+
+    <div class="container">
+    <div class="row">
+        <div class="col">
+        <div class="border border-danger p-3">
+            <form class="d-flex">
+            <div class="me-3">
+                <label for="categoria" class="form-label">Categoría:</label>
             </div>
-            <div class="form-group col-4">
-                ordenar Por: 
+            <div class="me-3">
+                <select id="categoria" class="form-select">
+                {{#each catList}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+                </select>
             </div>
-            <div class="form-group col-4"> 
-                <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="asc">
-                <label class="form-check-label" for="inlineRadio1">Ascendente</label>
+            <div class="me-3">
+                <label class="form-check-label">PRECIO:</label>
+            </div>
+            <div class="me-3">  
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="orden" id="ascendente" value="asc" checked>
+                <label class="form-check-label" for="ascendente">Ascendente</label>
                 </div>
-                <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="desc">
-                <label class="form-check-label" for="inlineRadio2">Descendente</label>
+            </div>
+            <div class="me-3">    
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="orden" id="descendente" value="desc">
+                <label class="form-check-label" for="descendente">Descendente</label>
                 </div>
             </div>
-            </div>
+            <button type="button" onclick=aplicar() class="btn btn-primary">Aplicar</button>
+            </form>
         </div>
-    </form>
+        </div>
     </div>
+    </div>
+
+
+
     <br>
 
     <div class="row mb-3">
@@ -76,11 +110,11 @@
                     <mark>$ {{this.price}}</mark>
                     </div>
                     <div class="col-6">
-
-                        <a href="#" class="btn btn-outline-primary" 
-                                onclick=addToCart('{{this._id}}')>
-                                Comprar
-                        </a>
+                        {{#if ../user.userRegistered}}
+                            <a href="#" class="btn btn-outline-primary" onclick=addToCart('{{this._id}}')>Comprar</a>
+                        {{else}}
+                            <a href="#" class="btn btn-outline-primary" onclick=login()>Inicia Sesión</a>
+                        {{/if}}
                     </div>
                 </div>
             </div>

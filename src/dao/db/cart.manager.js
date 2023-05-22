@@ -7,7 +7,15 @@ class CartManager {
 
     async getCartById(cid){
         try {
-            return await cartModel.findOne({_id: cid})
+            return await cartModel.findById({cid})
+        }catch(err){
+            return new Error(err)
+        }
+    }
+
+    async getCartByEmail(userMail){
+        try {
+            return await cartModel.findOne({clientId: userMail})
         }catch(err){
             return new Error(err)
         }
@@ -26,7 +34,6 @@ class CartManager {
         try {
             // first verify if there is a cart for the user
             let cart = await cartModel.findOne({clientId: userMail})
-            console.log('x', cart)
             if (cart){
                 // I already have a cart
                 return cart
@@ -54,6 +61,26 @@ class CartManager {
             // the product already exists in the cart
             cart.products[productIndex].quantity+= quantity
         }
+
+        // save the updated cart
+        await cart.save()
+
+        return {status: "succes", cart, productsQty:cart.products.length}
+    }
+
+
+    async deleteProduct(cid, pid) {
+        const cart= await cartModel.findById(cid)
+        if (!cart) return {status: "error", message: "Carrito no encontrado"}
+
+        const productIndex = cart.products.findIndex(prod =>prod.product._id.toString()===pid)
+
+        // Return error if the product isn´t in the cart.
+        if (productIndex===-1) return {status: "error", message: 'El producto no existe en el carrito'}
+
+        // the product exists in the cart
+        cart.products.splice(productIndex,1)
+        
 
         // save the updated cart
         await cart.save()

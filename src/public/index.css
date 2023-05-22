@@ -1,0 +1,12 @@
+body { 
+    padding-top: 10pt;
+    padding-right: 10px;
+    padding-bottom: 110%; 
+    padding-left: 2cm 
+    }
+
+.registerbox {
+    color: blue;
+    padding: 2em;
+    border: 2px
+}
