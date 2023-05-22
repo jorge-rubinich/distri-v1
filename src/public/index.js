@@ -5,8 +5,7 @@ function aplicar() {
   let query = '?sort='+orderby
   if (catSelected!=="Todas") { query+= "&query=category:"+catSelected}
   window.location.href = "/"+query
- }
-
+}
 
 
 function addToCart(pid) {
@@ -45,7 +44,6 @@ function addToCart(pid) {
 
 
 function deleteFromCart(pid) {
-  alert('aca lllegue')
   const url = `http://localhost:8080/api/carrito/product/${pid}`
 
   const options = {
@@ -60,7 +58,6 @@ function deleteFromCart(pid) {
         }
       }).then(data => {
     const contadorCarrito = document.getElementById('contadorCarrito');
-    contadorCarrito.innerHTML= data.productsQty 
     Swal.fire({
       text: `Producto #${pid} ha sido eliminado carrito.`,
       toast: true,
@@ -68,6 +65,7 @@ function deleteFromCart(pid) {
       timer: 3000,
       position: "bottom-left",
     })
+    window.location.href = "/"
   })
   .catch(error => {
     console.error(error); // Maneja los errores de la solicitud
