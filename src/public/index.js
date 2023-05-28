@@ -1,3 +1,70 @@
+
+
+const containerCarrito = document.querySelector("#items");
+document.getElementById("cartButton").addEventListener("click",()=>populateCart())
+
+async function populateCart(cid){
+  cart=[]
+  try {
+    cid= '64718485d5276d27dfc25891'
+    const url = `http://localhost:8080/api/carts/${cid}`
+    const options = {
+      method: 'GET' 
+    }
+    await fetch(url, options)
+    .then((response)=>{
+      // evaluate the API response
+      if (!response.ok) throw new Error(response.message)
+      return response.json()
+    })
+    .then(data=>{
+    userCart= data.payload
+    console.log(userCart)
+    cart= userCart.products.map(item =>{
+      return {
+          quantity: item.quantity,
+          title: item.product.title,
+          price: item.product.price,
+          total: item.quantity* item.product.price,
+          thumbnails: item.product.thumbnails,
+          code: item.product.code,
+          productId: item.product._id.toString()
+        }
+      } )
+      })
+
+  } catch (error) {
+    
+  }
+
+  let cuentaCarrito=0;
+  containerCarrito.innerHTML = ""
+//  totalCompra= pedido.reduce( (acum,elemento)=> acum+ elemento.total,0)
+  cart.forEach(
+      (elemento) => {
+          cuentaCarrito+=1
+          let lineasCarrito= document.createElement("tr")
+
+          lineasCarrito.innerHTML = `
+          <div class="itemCarrito">
+              <div class="itemCarritoImg"><img src="${elemento.thumbnails}"></div>
+              <div class="itemCarritoDet">
+                  <div class="itemCarritoDetNom"><p>${elemento.title}</p></div>
+                  <div class="itemCarritoCompra">
+                      <div class="itemCompraDato itemCarritoPrecio">$${elemento.price}</div>
+                      <div class="itemCompraDato itemCarritoTotal">$${elemento.total}</div>
+                      <div class="itemCompraDato"><button id="eliminar-producto-${elemento.code}" type="button" class="btn btn-danger">
+                          <i class="bi bi-trash-fill"></i></button></div>
+                  </div>
+              </div> 
+          </div>`
+
+        })
+
+      
+    }
+
+
 function aplicar() {
   // get the selected category and order
   const catSelected = document.getElementById('categoria').value;
@@ -8,11 +75,11 @@ function aplicar() {
 }
 
 
-function addToCart(pid) {
-  const url = `http://localhost:8080/api/carrito/product/${pid}`
+function addToCart(cid, pid) {
+  const url = `http://localhost:8080/api/carts/${cid}/product/${pid}`
   const data  = {quantity :1}
   const options = {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json' 
     },
@@ -39,7 +106,6 @@ function addToCart(pid) {
   .catch(error => {
     console.error(error); // Maneja los errores de la solicitud
   });
-
 }
 
 
@@ -57,7 +123,6 @@ function deleteFromCart(pid) {
           throw new Error('Error en la solicitud')
         }
       }).then(data => {
-    const contadorCarrito = document.getElementById('contadorCarrito');
     Swal.fire({
       text: `Producto #${pid} ha sido eliminado carrito.`,
       toast: true,

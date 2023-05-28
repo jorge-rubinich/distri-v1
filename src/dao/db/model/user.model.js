@@ -1,6 +1,6 @@
 const { model, Schema} = require('mongoose')
 
-const collection="usuarios"
+const collection="users"
 
 const userSchema = new Schema({
     first_name: {
@@ -17,7 +17,10 @@ const userSchema = new Schema({
     },
     password: {
         type: String
-    }
+    },
+    cart: {
+        type: Schema.Types.ObjectId}
+
 })
 
 const userModel = model(collection, userSchema)

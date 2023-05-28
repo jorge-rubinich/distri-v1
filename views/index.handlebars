@@ -32,14 +32,13 @@
 
         <div class = "col-4">
             <section>
-                <a href="{{#if user.userRegistered}}/api/carrito/fromUSer{{/if}}">
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carritoOffcanvas" aria-controls="carritoOffcanvas">
+                    <button id='cartButton' class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carritoOffcanvas" aria-controls="carritoOffcanvas">
                     <i class="bi bi-cart4"><img = src="./imgs/shopping_cart.svg"></i>
                     <span id="contadorCarrito">
                         {{user.cartQty}}
                     </span>
                 </button>
-                </a>
+           {{!--      </a> --}}
                 {{#if user.userRegistered}}
                     <a href="/chat">
                     <button class="btn btn-primary " type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
@@ -52,7 +51,29 @@
     </div>
 
 
+    {{!-- Canvas del carrito. --}}
 
+        <div class="offcanvas offcanvas-end bg-info" tabindex="-1" id="carritoOffcanvas" aria-labelledby="carritoOffcanvasLabel">
+            <div class="offcanvas-header  bg-primary">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Tu Pedido</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                    <table class="table">
+
+                    <tbody id="items">
+                    </tbody>
+                    <tfoot>
+                        <tr id="footer">
+                        <th scope="row" colspan="6">Tu carrito está vacío!</th>
+                        </tr>
+
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    {{!-- FIN Canvas del carrito. --}}
 
     <div class="container">
     <div class="row">
@@ -111,7 +132,7 @@
                     </div>
                     <div class="col-6">
                         {{#if ../user.userRegistered}}
-                            <a href="#" class="btn btn-outline-primary" onclick=addToCart('{{this._id}}')>Comprar</a>
+                            <a href="#" class="btn btn-outline-primary" onclick=addToCart('{{../user.cartId}}','{{this._id}}')>Comprar</a>
                         {{else}}
                             <a href="#" class="btn btn-outline-primary" onclick=login()>Inicia Sesión</a>
                         {{/if}}

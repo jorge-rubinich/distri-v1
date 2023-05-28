@@ -1,6 +1,14 @@
 
-GET http://localhost:8080/api/productos?page=1&limit=5&filter=category=Drama
+GET http://localhost:8080/api/carts/64718485d5276d27dfc25891
 
+
+PUT http://localhost:8080/api/carts/64718485d5276d27dfc25891
+Content-Type: application/json
+{
+"products": [
+      {
+        
+}
 
 ### GET
 GET http://localhost:8080/api/productos/645b00f0dbd6b1315a5d6c8e

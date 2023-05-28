@@ -16,18 +16,16 @@ router.post('/login', async (req, res)=>{
     if (!userDB)   return res.status(404).send({status:'error', message:'No se encontró el usuario'})
     //have user. createCart create a cart (if no exist) and 
     // return the cartId
-    const userCart= await cartManager.createCart(userDB.email)
-    const cartQty= await cartManager.countProducts(userCart._id)
     role = (email=='adminCoder@coder.com' && password=='adminCod3r123')?'admin': 'usuario'
-
+    const cartQty= await cartManager.countProducts(userDB.cart)
+    console.log(userDB.cart, cartQty)
     req.session.user = {
         first_name: userDB.first_name,
         last_name: userDB.last_name,
         email: userDB.email,
         role,
         userRegistered: true,
-        userButton: "Logout",   
-        cartId:userCart._id,
+        cartId: userDB.cart.toString(),
         cartQty 
     }
   
@@ -52,22 +50,15 @@ router.post('/register', async (req, res)=>{
         const existUser = await userModel.findOne({email})
     
         if (existUser) return res.status(400).send({status: 'error', message: 'el email ya está registrado' })
-    
-        // otra forma
-        // const newUser = new userModel({
-        //     username,
-        //     first_name,
-        //     last_name, 
-        //     email, 
-        //     password 
-        // })
-        // await newUser.save()
-    
+
+        const userCart = await cartManager.createCart()
+        console.log(userCart)
         const newUser = {
             first_name,
             last_name, 
             email, 
-            password  /// encriptar
+            password, 
+            cart: userCart._id
         }
 
         let createdUser = await userModel.create(newUser)

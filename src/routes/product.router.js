@@ -6,9 +6,7 @@ const router = Router()
 
 router.get('/', async (req, res)=>{
     try {
-        console.log(req.query)
         const result = await productManager.getProductsJSON(req.query)
-        console.log(result)
         res.status(200).send({
         status: 'success',
         payload: result.docs,

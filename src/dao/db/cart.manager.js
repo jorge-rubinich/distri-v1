@@ -7,7 +7,7 @@ class CartManager {
 
     async getCartById(cid){
         try {
-            return await cartModel.findById({cid})
+            return await cartModel.findOne({_id: cid})
         }catch(err){
             return new Error(err)
         }
@@ -30,16 +30,11 @@ class CartManager {
         }
     }
 
-    async createCart(userMail) {
+    async createCart() {
         try {
             // first verify if there is a cart for the user
-            let cart = await cartModel.findOne({clientId: userMail})
-            if (cart){
-                // I already have a cart
-                return cart
-            }
-            cart= {
-                clientId: userMail,
+            const cart= {
+                clientId: "",
                 products: []
             }
             return await cartModel.create(cart)
@@ -50,23 +45,46 @@ class CartManager {
     }
 
     async addProduct(cid, pid, quantity) {
-        const cart= await cartModel.findById(cid)
-        if (!cart) return {status: "error", message: "Carrito no encontrado"}
+        try {
+            const cart= await cartModel.findById(cid)
+            if (!cart) return {status: "error", message: "Carrito no encontrado"}
 
-        const productIndex = cart.products.findIndex(prod =>prod.product._id.toString()===pid)
-        if (productIndex===-1){
-            // the product isn´t in the cart. Add it
-            cart.products.push({product: pid, quantity})
-        } else {
-            // the product already exists in the cart
-            cart.products[productIndex].quantity+= quantity
+            const productIndex = cart.products.findIndex(prod =>prod.product._id.toString()===pid)
+            if (productIndex===-1){
+                // the product isn´t in the cart. Add it
+                cart.products.push({product: pid, quantity})
+            } else {
+                // the product already exists in the cart
+                cart.products[productIndex].quantity+= quantity
+            }
+
+            // save the updated cart
+            await cart.save()
+            return {status: "success", message: "producto agregado correctamente", productsQty:cart.products.length }
+        } catch (error) {
+            return {status: 'error', message: error}
         }
 
-        // save the updated cart
-        await cart.save()
-
-        return {status: "succes", cart, productsQty:cart.products.length}
     }
+
+    // replace the entire products array
+    async modifyProducts(cid, products) {
+        try {
+            const cart= await cartModel.findById(cid)
+            if (!cart) return {status: "error", message: "Carrito no encontrado"}
+
+            cart.products= products
+
+            // save the updated cart
+            await cart.save()
+            return {status: "success", message: "producto agregado correctamente", productsQty:cart.products.length }
+        } catch (error) {
+            return {status: 'error', message: error}
+        }
+
+    }
+
+
 
 
     async deleteProduct(cid, pid) {
@@ -87,6 +105,19 @@ class CartManager {
 
         return {status: "succes", cart, productsQty:cart.products.length}
     }
+
+
+    async deleteCart(cid) {
+        const cart= await cartModel.findById(cid)
+        if (!cart) return {status: "error", message: "Carrito no encontrado"}
+
+        cart.products= []
+
+        // save the updated cart
+        await cart.save()
+
+        return {status: "succes", cart, productsQty:cart.products.length}
+    }    
 
     async countProducts(cid) {
         const cart= await cartModel.findById(cid)
