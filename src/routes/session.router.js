@@ -4,78 +4,37 @@ const {userModel} = require('../dao/db/model/user.model.js')
 const router = Router()
 const passport = require('passport')
 const cartManager = require('../dao/db/cart.manager.js')
+const { createHash, isValidPassword } = require('../utils/bcryptHash.js')
 
-router.post("/loginNuevo", passport.authenticate('login', {
-    failureRedirect: '/failregister',
-    successsRedirect: '/'
-}) )
+router.post("/login", passport.authenticate('login'),  async (req,res) => {
+    if (!req.user) return res.status(401).send({status: 'error', message: 'Usuario o Clave incorrecta'})
 
-router.post('/login', async (req, res)=>{
-    const {email, password} = req.body
-    const userDB = await userModel.findOne({email, password})
-    if (!userDB)   return res.status(404).send({status:'error', message:'No se encontró el usuario'})
-    //have user. createCart create a cart (if no exist) and 
-    // return the cartId
-    role = (email=='adminCoder@coder.com' && password=='adminCod3r123')?'admin': 'usuario'
-    const cartQty= await cartManager.countProducts(userDB.cart)
-    console.log(userDB.cart, cartQty)
+    role = (req.user.email=='adminCoder@coder.com')?'admin': 'usuario'
+    const cartQty= await cartManager.countProducts(req.user.cart)
     req.session.user = {
-        first_name: userDB.first_name,
-        last_name: userDB.last_name,
-        email: userDB.email,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
         role,
         userRegistered: true,
-        cartId: userDB.cart.toString(),
+        cartId: req.user.cart.toString(),
         cartQty 
     }
-  
-    res.redirect('/')
+    res.status(200).send({status: 'success', message: 'User logeado.'})
 
-})
+}) 
 
 
-router.post("/registerNuevo", passport.authenticate('registerLocal', {
-    failureRedirect: '/failregister',
+router.post("/register", passport.authenticate('registerLocal',{
+    failureRedirect: '/api/session/failregister',
     successsRedirect: '/'
 }) )
 
-
-router.post('/register', async (req, res)=>{
-    try {
-        console.log(req.body)
-        const {first_name, last_name, email, password} = req.body 
-        //validar los campos
-    
-        // is mail already used?
-        const existUser = await userModel.findOne({email})
-    
-        if (existUser) return res.status(400).send({status: 'error', message: 'el email ya está registrado' })
-
-        const userCart = await cartManager.createCart()
-        console.log(userCart)
-        const newUser = {
-            first_name,
-            last_name, 
-            email, 
-            password, 
-            cart: userCart._id
-        }
-
-        let createdUser = await userModel.create(newUser)
-        
-        if (!createdUser) return res.status(400).send({status: 'error',
-            message: 'No pudo crearse el nuevo Usuario'})
-
-        res.status(200).send({
-            status: 'success',
-            message: 'Usuario creado correctamente',
-            createdUser
-        })
-    } catch (error) {
-        console.log(error)
-    }
-   
+router.get("/failregister", async (req, res)=>{
+    console.log("Fallo la estrategia de registro")
+    res.status(400).send({status: 'error', error: 'fallo autenticacion'})
 })
+
 
 router.get('/logout', (req, res)=>{
     req.session.destroy(err=>{

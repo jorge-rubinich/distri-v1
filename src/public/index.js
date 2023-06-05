@@ -163,7 +163,7 @@ async function login() {
           throw new Error("Usuario o Contraseña incorrecta")
       } 
            // Acepted..Redirect to main page
-           window.location.href = response.url
+           window.location.href = "/"
       }). catch(error =>{
         Swal.showValidationMessage(error.message)
       })
@@ -197,7 +197,7 @@ async function login() {
         }) .then((response)=>{
           console.log(response)
            // if !ok . .
-          if (!response.ok) throw new Error(response.message) 
+          if (!response.ok) throw new Error("Ha ocurrido un error al registrar el usuario.") 
              // Acepted..Redirect to main page
              //window.location.href = response.url
              Swal.fire({
@@ -208,7 +208,7 @@ async function login() {
               timer: 3000,
               position: "top-right",
             })
-        }). catch(error =>{
+        }).catch(error =>{
           Swal.showValidationMessage(error.message)
         })
       }})
