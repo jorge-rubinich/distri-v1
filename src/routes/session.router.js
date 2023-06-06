@@ -36,6 +36,28 @@ router.get("/failregister", async (req, res)=>{
 })
 
 
+// login and register with GitHub
+// this is called from "Ingresar con GitHub" button in login Form
+router.get('/github', passport.authenticate('github',{scope:['user:email']}), async(req,res)=>{})
+// this is the called from github
+router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/login"}),async(req,res)=>{
+    // The strategy return the user. 
+    role = (req.user.email=='adminCoder@coder.com')?'admin': 'usuario'
+    const cartQty= await cartManager.countProducts(req.user.cart)
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        role,
+        userRegistered: true,
+        cartId: req.user.cart.toString(),
+        cartQty 
+    }
+    //res.status(200).send({status: 'success', message: 'User logeado.'})
+    res.redirect('/')
+})
+
+
 router.get('/logout', (req, res)=>{
     req.session.destroy(err=>{
         if (err) {

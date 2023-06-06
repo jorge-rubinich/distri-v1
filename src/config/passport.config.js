@@ -1,5 +1,7 @@
 const passport = require('passport')
 const local = require('passport-local')
+const GitHubStrategy = require('passport-github2') 
+const systemVars = require('../config/index.js')
 
 const {userModel} = require('../dao/db/model/user.model')
 //const { isValidPassword } = require('../utils/bcryptHash')
@@ -9,7 +11,42 @@ const cartManager = require('../dao/db/cart.manager')
 
 const LocalStrategy= local.Strategy
 
-const initPassport = () => {
+const initPassport = (gitHubVars) => {
+
+    const  {GIT_CLIENTID, GIT_CLIENTSECRET, GIT_CALLBACKURL } = gitHubVars
+
+    passport.use('github', new GitHubStrategy({
+        clientID: GIT_CLIENTID,
+        clientSecret: GIT_CLIENTSECRET,
+        callbackURL: GIT_CALLBACKURL
+    }, async(accessToken, refreshToken, profile, done)=>{
+        try {
+            console.log(profile)
+            if (!profile._json.email){
+                //have no email in the profile (profile is private?)
+                throw new Error('Github no ha proporcionado su email. Verifique que su perfil sea publico.')
+            }
+            let user = await userModel.findOne({email: profile._json.email })
+            if (!user){
+                // have no user. Create it
+                const userCart = await cartManager.createCart()
+
+                let newUser= {
+                    first_name: profile._json.name,
+                    last_name: '',
+                    email: profile._json.email,
+                    password: '',
+                    cart: userCart._id
+                }
+                let result= await userModel.create(newUser)
+                done(null, result)
+            } else {   // user exists
+                done(null, user)
+            }
+        } catch (error) {
+            return done(error)
+        }
+    }))
 
     passport.use('registerLocal', new LocalStrategy({
         passReqToCallback: true,

@@ -145,7 +145,8 @@ async function login() {
     title: 'Iniciar sesión',
     html:
       '<input id="email" class="swal2-input" placeholder="Correo electrónico">' +
-      '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">',
+      '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">'+
+      '<HR><div><a href="/api/session/github"><button>Ingresar con GitHub</button></a></div>',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
@@ -159,9 +160,7 @@ async function login() {
         headers: {'content-type': 'application/json'}
       }) .then((response)=>{
          // evaluate the API response
-        if (!response.ok) {
-          throw new Error("Usuario o Contraseña incorrecta")
-      } 
+        if (!response.ok) { throw new Error("Usuario o Contraseña incorrecta") } 
            // Acepted..Redirect to main page
            window.location.href = "/"
       }). catch(error =>{

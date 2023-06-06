@@ -35,7 +35,7 @@ app.use(session({
     saveUninitialized: true //guarda la session aunque no tenga datos
 }))
 
-initPassport()
+initPassport(systemVars.gitHub)
 passport.use(passport.initialize())
 passport.use(passport.session())
 

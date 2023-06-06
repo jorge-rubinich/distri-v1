@@ -16,6 +16,11 @@ const systemVars = {
   pager: {
     limit: 3,
     page: 1,
+  },
+  gitHub: {
+    GIT_CLIENTID: process.env.GIT_CLIENTID,
+    GIT_CLIENTSECRET: process.env.GIT_CLIENTSECRET,
+    GIT_CALLBACKURL: process.env.GIT_CALLBACKURL
   }
 }
 
