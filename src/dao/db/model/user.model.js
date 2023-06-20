@@ -1,4 +1,6 @@
 const { model, Schema} = require('mongoose')
+const  {createHash, isValidPassword} = require('../../../utils/bcryptHash.js')
+
 
 const collection="users"
 
@@ -21,6 +23,12 @@ const userSchema = new Schema({
     cart: {
         type: Schema.Types.ObjectId}
 
+})
+
+userSchema.pre('save', async function(next){
+    const hash= await createHash(this.password)
+    this.password = hash
+    next()
 })
 
 const userModel = model(collection, userSchema)

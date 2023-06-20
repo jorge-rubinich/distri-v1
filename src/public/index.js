@@ -160,6 +160,7 @@ async function login() {
         headers: {'content-type': 'application/json'}
       }) .then((response)=>{
          // evaluate the API response
+         console.log(response)
         if (!response.ok) { throw new Error("Usuario o Contraseña incorrecta") } 
            // Acepted..Redirect to main page
            window.location.href = "/"

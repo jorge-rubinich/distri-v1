@@ -2,16 +2,30 @@ const Router = require('express')
 const productManager = require('../dao/db/product.manager')
 const viewsRouter= Router()
 const systemVars = require('../config/index.js')
+const passport = require('passport')
 
-viewsRouter.get("/", async (req, res)=>{
-    if (!req.session.user){
-        req.session.user={
+// personalized jwt for home page. Doesn´t return 401 if there is no user
+const JWTHomePage  = (req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, user) => {
+      if (user) {
+        req.user = user
+      }
+      next()
+        })
+        (req, res, next);
+  };
+
+viewsRouter.get("/", JWTHomePage, async (req, res)=>{
+
+    if (!req.user){
+        req.user={
             userRegistered: false,
             userCartQty:0
         }
     }
-    user=req.session.user
-
+    user=req.user
+    console.log("Home",req.user)
+    console.log(user.userRegistered)
     const catList = await productManager.getCategories()
     catList.unshift("Todas")
     const result = await productManager.getProductsJSON(req.query)
@@ -55,7 +69,7 @@ function createLink(origQuery, page, newPage) {
 }) */
 
 
-viewsRouter.get('/chat', (req, res) => {
+viewsRouter.get('/chat', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.render('chat', {})
 })
 
