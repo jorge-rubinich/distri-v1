@@ -30,7 +30,6 @@ router.get('/github',
 router.get('/githubcallback', 
     passport.authenticate('github',{failureRedirect:"/login", session: false}),
      userControler.githubRegister)
-
 router.get('/logout', (req, res)=>{
     res.clearCookie('appCookieToken').redirect("/");
     })
