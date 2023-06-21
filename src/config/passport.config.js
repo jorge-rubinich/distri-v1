@@ -9,14 +9,13 @@ const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
 
 
-const initPassport = (gitHubVars)=>{
+const initPassport = (passVars)=>{
 
-const  {GIT_CLIENTID, GIT_CLIENTSECRET, GIT_CALLBACKURL } = gitHubVars
-
+const  {GIT_CLIENTID, GIT_CLIENTSECRET, GIT_CALLBACKURL, JWT_SECRETKEY } = passVars
 
 const JWTOptions= {
     jwtFromRequest : ExtractJWT.fromExtractors([cookieExtractor]),
-    secretOrKey: "MiClaveUltraSecreta"
+    secretOrKey: JWT_SECRETKEY
 }
 
 passport.use('jwt', new JWTStrategy(JWTOptions, 

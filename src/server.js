@@ -24,7 +24,7 @@ const app = express()
     saveUninitialized: true //guarda la session aunque no tenga datos
 }))  */
 
-initPassport(systemVars.gitHub)
+initPassport(systemVars.passport)
 //passport.use(passport.initialize())
 app.use(passport.initialize())
 //passport.use(passport.session())

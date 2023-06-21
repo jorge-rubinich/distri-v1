@@ -2,8 +2,9 @@
 //  in front-End
 
 console.log('Socket')
+
 const socket = io()
-let user
+//let user
 let chatbox = document.querySelector('#chatbox')
 let messageLog = document.querySelector('#messageLog')
 
@@ -13,7 +14,7 @@ fetch('/api/session/datos-sesion')
   .then(data => {
     // Access data session in the client and 
     // use email as the username
-    user = data.userSession.email 
+    user = data.email 
     socket.emit('new-user', user)
   })
   .catch(error => {

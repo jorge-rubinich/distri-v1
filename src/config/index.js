@@ -17,10 +17,12 @@ const systemVars = {
     limit: 3,
     page: 1,
   },
-  gitHub: {
+  passport: {
     GIT_CLIENTID: process.env.GIT_CLIENTID,
     GIT_CLIENTSECRET: process.env.GIT_CLIENTSECRET,
-    GIT_CALLBACKURL: process.env.GIT_CALLBACKURL
+    GIT_CALLBACKURL: process.env.GIT_CALLBACKURL,
+    JWT_SECRETKEY: process.env.JWT_SECRETKEY
+    
   }
 }
 

@@ -70,7 +70,7 @@ function createLink(origQuery, page, newPage) {
 
 
 viewsRouter.get('/chat', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.render('chat', {})
+    res.render('chat', {user: req.user})
 })
 
 module.exports = viewsRouter

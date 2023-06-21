@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
+const systemsVars= require('../config/index')
 
-const PRIVATE_KEY = "MiClaveUltraSecreta"
-
+const PRIVATE_KEY = systemsVars.passport.JWT_SECRETKEY
+console.log(systemsVars)
 // recibe user object and encode it in the token
 const generateToken = (user) => {
 
