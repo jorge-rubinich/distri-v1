@@ -17,7 +17,7 @@ router.use('/api/clients', clientRouter )
 
 router.use('/api/carts', cartRouter )
 
-router.use('/api/session',sessionRouter)
+router.use('/api/sessions',sessionRouter)
 
 /* router.post('/upload', fileUploader.single('miArchivo'), (req, res)=>{
     res.send({

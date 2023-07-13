@@ -1,6 +1,7 @@
 const cartManager = require('../dao/db/cart.manager.js')
+const productManager = require('../dao/db/product.manager.js')
 
-class CartControler {
+class CartController {
 
   getCarts= async (req, res)=>{
     try {
@@ -39,13 +40,14 @@ class CartControler {
 
   addProduct= async (req, res)=>{
     const {cid, pid} = req.params
+    console.log(cid, pid)
     // valid product id
     const product= await productManager.getProductById(pid)
     if (!product) return res.status(400).send({status:'error',message:'El producto indicado no existe'})
-
-    if (!req.session.user?.userRegistered) return res.status(400).send({status:'userNotLogedIn',message:'Usuario no registrado'})
+    console.log(req.user)
+    if (!req.user?.userRegistered) return res.status(400).send({status:'userNotLogedIn',message:'Usuario no registrado'})
     const quantity = req.body.quantity | 1 
-
+    
     try {
         const response = await cartManager.addProduct(cid, pid, quantity) 
         if (response.status==="error"){
@@ -121,4 +123,4 @@ class CartControler {
 
 }
 
-module.exports = new CartControler
+module.exports = new CartController

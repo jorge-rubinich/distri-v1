@@ -1,24 +1,24 @@
 const {Router} = require('express')
-const cartControler = require('../controlers/cart.controler.js')
+const cartController = require('../controllers/cart.controller.js')
 const router = Router()
 
-router.get('/', cartControler.getCarts)
+router.get('/', cartController.getCarts)
 
-router.get('/:cid', cartControler.getCartById)
+router.get('/:cid', cartController.getCartById)
 
-router.post('/', cartControler.createCart)
+router.post('/', cartController.createCart)
 
 // Add product to Cart
-router.put('/:cid/product/:pid', cartControler.addProduct)
+router.put('/:cid/product/:pid', cartController.addProduct)
 
 // Add product array to Cart
-router.put('/:cid', cartControler.addProductArray)
+router.put('/:cid', cartController.addProductArray)
 
 
 // delete a product in the Cart
-router.delete('/:cid/product/:pid', cartControler.deleteProduct)
+router.delete('/:cid/product/:pid', cartController.deleteProduct)
 
 // delete all products in the Cart
-router.delete('/:cid', cartControler.deleteAllProducts )
+router.delete('/:cid', cartController.deleteAllProducts )
 
 module.exports = router

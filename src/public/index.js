@@ -77,6 +77,7 @@ function aplicar() {
 
 function addToCart(cid, pid) {
   const url = `http://localhost:8080/api/carts/${cid}/product/${pid}`
+  console.log(url)
   const data  = {quantity :1}
   const options = {
     method: 'PUT',
@@ -90,6 +91,7 @@ function addToCart(cid, pid) {
         if (response.ok) {
           return response.json()
         }  else {
+          console.log(response)
           throw new Error('Error en la solicitud')
         }
       }).then(data => {
@@ -104,13 +106,13 @@ function addToCart(cid, pid) {
     })
   })
   .catch(error => {
-    console.error(error); // Maneja los errores de la solicitud
-  });
+    console.error(error) // Maneja los errores de la solicitud
+  })
 }
 
 
 function deleteFromCart(pid) {
-  const url = `http://localhost:8080/api/carrito/product/${pid}`
+  const url = `http://localhost:8080/api/carts/product/${pid}`
 
   const options = {
     method: 'DELETE' 
@@ -146,7 +148,7 @@ async function login() {
     html:
       '<input id="email" class="swal2-input" placeholder="Correo electrónico">' +
       '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">'+
-      '<HR><div><a href="/api/session/github"><button>Ingresar con GitHub</button></a></div>',
+      '<HR><div><a href="/api/sessions/github"><button>Ingresar con GitHub</button></a></div>',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
@@ -154,7 +156,7 @@ async function login() {
     preConfirm: async () => {
       const email = Swal.getPopup().querySelector('#email').value
       const password = Swal.getPopup().querySelector('#password').value
-      return await fetch('/api/session/login', {
+      return await fetch('/api/sessions/login', {
         method: 'POST',
         body: JSON.stringify({email, password}),
         headers: {'content-type': 'application/json'}
@@ -190,7 +192,7 @@ async function login() {
         const email = Swal.getPopup().querySelector('#email').value
         const password = Swal.getPopup().querySelector('#password').value
 
-        return await fetch('/api/session/register', {
+        return await fetch('/api/sessions/register', {
           method: 'POST',
           body: JSON.stringify({first_name, last_name, email, password}),
           headers: {'content-type': 'application/json'}
@@ -217,7 +219,7 @@ async function login() {
 
 
   async function logout() {
-    response= await fetch('/api/session/logout', { method: 'GET'})
+    response= await fetch('/api/sessions/logout', { method: 'GET'})
     if (response.redirected) window.location.href = response.url
 
   }

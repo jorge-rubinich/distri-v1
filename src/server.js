@@ -11,8 +11,10 @@ const socketServer = require("./sockets/socketServer.js")
 const session = require('express-session') */
 const { initPassport } = require("./config/passport.config")
 const passport = require('passport')
+const { addLogger } = require("./config/logger")
+const {cpus} = require('os')
 
-
+console.log(cpus().length)
 const { PORT } = systemVars.app
 const {URI} = systemVars.database
 
@@ -41,6 +43,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname+'/public'))
 app.use(logger('dev'))
 app.use(cookieParser())
+app.use(addLogger)
 
 app.use("/", viewsRouter)
 app.use(routerServer)
@@ -52,8 +55,6 @@ server = app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
     console.log(`Escuchando en Puerto ${PORT}`)
     console.log(`acceder a ${systemVars.app.HOST_URL}/ `) 
-    console.log(`      o a ${systemVars.app.HOST_URL}/?query=category:smartphones `) 
-    console.log(`      o a ${systemVars.app.HOST_URL}/?sort=asc    o ambas`) 
 
 })
 

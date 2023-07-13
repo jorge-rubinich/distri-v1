@@ -1,6 +1,6 @@
 const ProductManager = require('../dao/db/product.manager.js')
 
-class ProductControler {
+class ProductController {
   getProduct =   async (req, res)=>{
     try {
         const result = await productManager.getProductsJSON(req.query)
@@ -94,4 +94,4 @@ deleteProduct= async (req, res)=>{
 
 }
 
-module.exports = new ProductControler
+module.exports = new ProductController
