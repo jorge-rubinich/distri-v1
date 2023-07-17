@@ -64,7 +64,7 @@ passport.use('github', new GitHubStrategy({
 
 
 
-passport.use('register', new localStrategy({
+passport.use('registerLocal', new localStrategy({
     passReqToCallback: true,
     usernameField: 'email',
     passwordField: 'password'

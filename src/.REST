@@ -52,3 +52,9 @@ POST http://localhost:8080/api/carrito/6461a37cf6cfe84be01f7eed/product/6460eeec
 
 ###
 post http://localhost:8080/api/sessions/login
+Content-Type: application/json
+
+{
+"email": "s"
+}
+

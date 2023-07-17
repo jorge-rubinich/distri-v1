@@ -7,24 +7,16 @@ const {connectDb} = require('./config/configServer.js')
 const cookieParser = require("cookie-parser")
 const systemVars = require('./config/index.js')
 const socketServer = require("./sockets/socketServer.js")
-/* const FileStore = require("session-file-store")
-const session = require('express-session') */
+
 const { initPassport } = require("./config/passport.config")
 const passport = require('passport')
 const { addLogger } = require("./config/logger")
-const {cpus} = require('os')
 
-console.log(cpus().length)
 const { PORT } = systemVars.app
 const {URI} = systemVars.database
 
 const app = express()
 
-/* app.use(session({
-    secret: 'secretito',
-    resave: true,   // para que la session no muera
-    saveUninitialized: true //guarda la session aunque no tenga datos
-}))  */
 
 initPassport(systemVars.passport)
 //passport.use(passport.initialize())

@@ -24,7 +24,6 @@ class SessionController {
         const access_token= generateToken(tknUser)
         res.status(200).cookie('appCookieToken', access_token, {httpOnly: true, maxAge: 60*60*1000}
             ).send({status: 'success', message: 'User logeado.'})
-    
     }
 
     register = (req, res)=>{

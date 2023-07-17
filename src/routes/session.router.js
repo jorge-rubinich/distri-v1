@@ -7,9 +7,10 @@ const cartManager = require('../dao/db/cart.manager.js')
 const { createHash, isValidPassword } = require('../utils/bcryptHash.js')
 const {generateToken, authToken} = require('../utils/jsonWebToken.js')
 const sessionController = require('../controllers/session.controller.js')
+const { validateLoginDTO } = require('../DTOs/login.dto.js')
 
 router
-    .post("/login", passport.authenticate('login', {session: false}), sessionController.login) 
+    .post("/login", validateLoginDTO, passport.authenticate('login', {session: false}), sessionController.login) 
     .post("/register", passport.authenticate('registerLocal',{failureRedirect: '/api/session/failregister', session: false}),
                  sessionController.register)    
     .get("/failregister", async (req, res)=>{
